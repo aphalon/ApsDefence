@@ -40,7 +40,7 @@ namespace ApsDefence
             }
             else
             {
-                Logger.Log($"Config file '{configFile}' does not exist - using default values");
+                Logger.Warning($"Config file '{configFile}' does not exist - using default values");
             }
         }
 

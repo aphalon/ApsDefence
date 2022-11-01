@@ -12,7 +12,11 @@ namespace ApsDefence
         static object _locker = new object();
         static List<LogonAttempt> _logonAttempts = new List<LogonAttempt>();
         private static Timer _expiredTimer = new Timer();
+        private static int _processingCount = 0;
 
+        /// <summary>
+        /// Static constructor 
+        /// </summary>
         static LogonAttempts()
         {
             // Start timer
@@ -24,21 +28,43 @@ namespace ApsDefence
 
         }
 
+        /// <summary>
+        /// Check cache for expired logon attempts and cleanup
+        /// </summary>
+        /// <param name="source">Event source</param>
+        /// <param name="e">Event parameters</param>
         private static void CheckForExpiredLogonAttempts(object source, ElapsedEventArgs e)
         {
-            _expiredTimer.Stop();
-
-            Logger.Debug($"Checking for expired logon attempts (> {Helper.BlockPeriod.TotalMinutes} mins)");
-
-            // Remove anything older than the period of interest
-            lock (_locker)
+            try
             {
-                _logonAttempts.RemoveAll(t => t.AttemptTime < DateTime.Now.Subtract(Helper.BlockPeriod));
-            }
+                _processingCount++;
+                _expiredTimer.Stop();
 
-            _expiredTimer.Start();
+                Logger.Debug($"Checking for expired logon attempts (> {Helper.BlockPeriod.TotalMinutes} mins)");
+
+                // Remove anything older than the period of interest
+                lock (_locker)
+                {
+                    _logonAttempts.RemoveAll(t => t.AttemptTime < DateTime.Now.Subtract(Helper.BlockPeriod));
+                }
+
+                _expiredTimer.Start();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to check for expired logons: {ex.Message}");
+            }
+            finally
+            {
+                _processingCount--;
+            }
         }
 
+        /// <summary>
+        /// Add detected logon attempt and block if needed
+        /// </summary>
+        /// <param name="logonAttempt">LogonAttempt object</param>
         public static void AddDetectedLogonAttempt(LogonAttempt logonAttempt)
         {
             bool blockIP = false;
@@ -71,12 +97,45 @@ namespace ApsDefence
             }
         }
 
+        /// <summary>
+        /// Stop Logon processing ready for process shutdown
+        /// </summary>
+        public static void StopProcessing()
+        {
+            _expiredTimer.Stop();
+            int maxWaits = 10;
+            int waits = 0;
+
+            Logger.Log("Stopping Logon processing");
+
+            while (_processingCount > 0)
+            {
+                System.Threading.Thread.Sleep(500);
+                if (waits > maxWaits)
+                {
+                    Logger.Warning("Max wait for Logon processing exceeded - terminating anyway");
+                    break;
+                }
+                Logger.Log($"Waiting for Logon processing jobs to complete - currently {_processingCount} active");
+            }
+        }
+
+        /// <summary>
+        /// Add detected logon attempt and block if needed
+        /// </summary>
+        /// <param name="timeCreated">Time that the logon was received</param>
+        /// <param name="ipAddress">Remote IP address</param>
+        /// <param name="fullUsername">Username that the logon attempt used</param>
         public static void AddDetectedLogonAttempt(DateTime timeCreated, string ipAddress, string fullUsername)
         {
             AddDetectedLogonAttempt(new LogonAttempt(timeCreated, ipAddress, fullUsername));
         }
 
-        public static void RemoveIPFromCache(string ipAddress)
+        /// <summary>
+        /// Remove IP address from cache
+        /// </summary>
+        /// <param name="ipAddress">IP Address</param>
+        private static void RemoveIPFromCache(string ipAddress)
         {
             lock (_locker)
             {

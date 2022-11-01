@@ -201,13 +201,14 @@ namespace ApsDefence
         /// </summary>
         private static void CreateLog()
         {
-            string str = "";
             DateTime now = DateTime.Now;
+            string logName = $"{now.ToString("yyyy-MM-dd")}.log";
+
             try
             {
                 if (log != null && now.Date > m_logDate.Date)
                 {
-                    log.WriteLine("{0} {1}", DateTime.Now.ToString("HH:mm:ss"), FormatLogMessage(string.Format("Spinning log to {0}", str), MessageTypes.Info));
+                    log.WriteLine("{0} {1}", DateTime.Now.ToString("HH:mm:ss"), FormatLogMessage(string.Format("Spinning log to {0}", logName), MessageTypes.Info));
                     log.Close();
                     log = null;
                 }
@@ -217,8 +218,8 @@ namespace ApsDefence
                     return;
                 }
 
-                log = new StreamWriter(Path.Combine(LogDirectory, $"{now.ToString("yyyy-MM-dd")}.log"), true);
-                m_logfile = str;
+                log = new StreamWriter(Path.Combine(LogDirectory, logName), true);
+                m_logfile = logName;
                 m_logDate = now;
                 _cleanupOldLogs = true;
             }

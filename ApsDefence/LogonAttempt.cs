@@ -12,9 +12,18 @@ namespace ApsDefence
         public string IPAddress;
         public string Username;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LogonAttempt()
         { }
 
+        /// <summary>
+        /// Constructor 
+        /// </summary>
+        /// <param name="attemptTime">Time that the logon was received</param>
+        /// <param name="ipAddress">Remote IP address</param>
+        /// <param name="username">Username that the logon attempt used</param>
         public LogonAttempt(DateTime attemptTime, string ipAddress, string username)
         {
             AttemptTime = attemptTime;
@@ -22,6 +31,9 @@ namespace ApsDefence
             Username = username;
         }
 
+        /// <summary>
+        /// Check whether the username included is on the list of auto-ban users
+        /// </summary>
         public bool IsUsernameOnBannedList
         {
             get
@@ -40,6 +52,10 @@ namespace ApsDefence
             }
         }
 
+        /// <summary>
+        /// Friendly object string
+        /// </summary>
+        /// <returns>Formatted string</returns>
         public override string ToString()
         {
             return $"{AttemptTime.ToString("yyyy-MM-dd HH:mm:ss")} | {IPAddress} | {Username} | {IsUsernameOnBannedList}";

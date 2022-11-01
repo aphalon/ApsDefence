@@ -12,9 +12,16 @@ namespace ApsDefence
         public string IPAddress;
         public string RuleName;
 
+        /// <summary>
+        /// Constructor for FirewallRule
+        /// </summary>
         public FirewallRule()
         { }
 
+        /// <summary>
+        /// Constructor for FirewallRule
+        /// </summary>
+        /// <param name="ruleName">Windows Firewall rule in ApsDefence format</param>
         public FirewallRule(string ruleName)
         {
             string[] split = ruleName.Split('^');
@@ -32,6 +39,10 @@ namespace ApsDefence
 
         }
 
+        /// <summary>
+        /// Friendly object string
+        /// </summary>
+        /// <returns>Formatted string</returns>
         public override string ToString()
         {
             return $"{Created.ToString("yyyy-MM-dd HH:mm:ss")} | {IPAddress}";

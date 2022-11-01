@@ -39,6 +39,7 @@ namespace ApsDefenceService
             // serviceInstaller1
             // 
             this.serviceInstaller1.ServiceName = "ApsDefence";
+            this.serviceInstaller1.Description = "Monitor Eventlog for unusual RDP logon attempts and temporarily block access from those IPs using Windows Firewall.";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

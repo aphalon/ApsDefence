@@ -20,6 +20,10 @@ namespace ApsDefenceService
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Startup code
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
 
@@ -30,13 +34,15 @@ namespace ApsDefenceService
 
         }
 
+        /// <summary>
+        /// Shutdown code
+        /// </summary>
         protected override void OnStop()
         {
             Logger.Log("Service Stop requested...");
             if (_defender != null)
             {
-                _defender.Dispose();
-                System.Threading.Thread.Sleep(2000);
+                _defender.StopProcessing();
             }
             Logger.Close();
         }

@@ -12,14 +12,33 @@ namespace ApsDefence
         private EventLogQuery _subscriptionQuery = null;
         private EventLogWatcher _watcher = null;
 
+        /// <summary>
+        /// Constructir
+        /// </summary>
+        /// <param name="configFile">Config file to load</param>
         public RDPDefender(string configFile)
         {
             Helper.LoadConfig(configFile);
             Init();
         }
 
+        /// <summary>
+        /// Stop processing work ready for process shutdown
+        /// </summary>
+        public void StopProcessing()
+        {
+            Dispose();
+            LogonAttempts.StopProcessing();
+            FirewallRules.StopProcessing();
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
+            Logger.Log("Stopping Eventlog monitoring");
+
             // Stop listening to events
             _watcher.Enabled = false;
 
@@ -29,6 +48,9 @@ namespace ApsDefence
             }
         }
 
+        /// <summary>
+        /// Initialise the Eventlog listeners
+        /// </summary>
         private void Init()
         {
             try
@@ -41,6 +63,7 @@ namespace ApsDefence
                 // Activate the subscription
                 _watcher.Enabled = true;
                 Logger.Log("Listening on Security log for new Events");
+                FirewallRules.Startup();
             }
             catch (EventLogReadingException e)
             {
@@ -48,6 +71,11 @@ namespace ApsDefence
             }
         }
 
+        /// <summary>
+        /// Event handler to read the event log entry and start conditional processing
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="arg"></param>
         private void EventLogEventRead(object obj, EventRecordWrittenEventArgs arg)
         {
             // Make sure there was no error reading the event.

@@ -10,13 +10,17 @@ namespace ApsDefenceHarness
 {
     class Program
     {
+        /// <summary>
+        /// Harness startup
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             try
             {
                 RDPDefender defender = new RDPDefender(Path.Combine(Helper.ExecutionDirectory, "ApsDefence.conf"));
                 WaitForQ();
-                defender.Dispose();
+                defender.StopProcessing();
             }
             catch (Exception ex)
             {
@@ -28,6 +32,9 @@ namespace ApsDefenceHarness
             }
         }
 
+        /// <summary>
+        /// Wait for someone to press Q
+        /// </summary>
         static void WaitForQ()
         {
             Console.WriteLine("Press Q to exit...");
