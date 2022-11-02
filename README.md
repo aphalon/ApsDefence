@@ -62,7 +62,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. Download the <a href="https://github.com/aphalon/ApsDefence/releases/download/v1.0.0/ApsDefenceService_1.0.0.zip">latest release</a>
+1. Download the <a href="https://github.com/aphalon/ApsDefence/releases/download/v1.0.0/ApsDefenceService_1.0.0.zip">latest release</a> from this project
 2. Extract the files to a folder of your choosing... `C:\ApsDefenceService` perhaps
 3. Start a Command Prompt as Administrator - navigate to the installation folder and execute `InstallService.bat`
 4. Execute `services.msc` and validate the Installation of the <b>ApsDefenceService</b>... then START the service.
