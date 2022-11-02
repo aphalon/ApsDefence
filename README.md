@@ -1,3 +1,11 @@
+<h1>ApsDefence</h3>
+
+  <p>Block those nefarious RDP access attempts</p>
+  <p>
+    <a href="https://github.com/aphalon/ApsDefence"><strong>Explore the docs »</strong></a>
+  </p>
+</div>
+
 <a name="readme-top"></a>
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -23,7 +31,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<p>This project was built to defend against third parties attempting to compromise an Windows Remote Desktop system that is exposed to the Internet.</p>
+<p>This project was built to defend against third parties attempting to logon (and presumably compromise) an Windows Remote Desktop system that is exposed to the Internet.</p>
 <p>In principle it is a Windows Service monitors the Windows Security EventLog looking for failed logon attempts and blocks those that have an unexpected pattern... by default based on particular usernames (*ADMIN* is a favourite) or whether a particular IP has initiated a filed logon multiple times within a time period. Once a pattern is detected it blocks all traffic from that IP address for a set period of time.</p>
 
 <p>The project is C# and was originally built with Visual Studio 2019. It is targetted against Microsoft.NET Framework v4.7.2.</p>
