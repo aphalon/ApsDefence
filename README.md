@@ -31,9 +31,9 @@
 
   <ol>
       <ul>
-        <li>ApsDefence - Class library with the defence code</li>
-        <li>ApsDefenceHarness - Console application for debugging of the ApsDefence library (Note - debugging must be done with Visual Studio running as ADMIN)</li>
-        <li>ApsDefenceService - Windows Service to run the ApsDefence library</li>
+        <li><b>ApsDefence</b> - Class library with the defence code</li>
+        <li><b>ApsDefenceHarness</b> - Console application for debugging of the ApsDefence library (Note - debugging must be done with Visual Studio running as ADMIN)</li>
+        <li><b>ApsDefenceService</b> - Windows Service to run the ApsDefence library</li>
       </ul>
   </ol>
 
