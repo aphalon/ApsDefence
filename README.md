@@ -2,7 +2,7 @@
 
   <p>Block those nefarious RDP access attempts</p>
   <p>
-    <a href="https://github.com/aphalon/ApsDefence"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/aphalon/ApsDefence/wiki"><strong>Explore the docs »</strong></a>
   </p>
 </div>
 
